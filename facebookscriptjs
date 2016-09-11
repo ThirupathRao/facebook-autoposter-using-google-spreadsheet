@@ -1,0 +1,56 @@
+Array.prototype.contains = function(v) {
+for(var i = 0; i < this.length; i++) {
+if(this[i] === v) return true;
+}
+return false;
+};
+Array.prototype.allGroups = function() {
+var arr = [];
+for(var i = 0; i < this.length; i++) {
+if(!arr.contains("\""+this[i].split("/")[2]+"\"")) {
+arr.push("\""+this[i].split("/")[2]+"\"");
+}
+}
+return arr;
+}
+Array.prototype.validGroups = function() {
+var arr = [];
+for(var i = 0; i < this.length; i++) {
+if(!arr.contains("\""+this[i].split("/")[2]+"\"") && isNaN(this[i].split("/")[2])) {
+arr.push("\""+this[i].split("/")[2]+"\"");
+}
+}
+return arr;
+}
+x = {
+aInternal: 10,
+aListener: function(val) {},
+set a(val) {
+this.aInternal = val;
+this.aListener(val);
+},
+get a() {
+return this.aInternal;
+},
+registerListener: function(listener) {
+this.aListener = listener;
+}
+}
+
+var NETWORKTIMEOUT = 5000;
+x.registerListener(function(val) {
+window.scrollBy(0,screen.height*100);
+setTimeout(function(){
+if(x.a == document.getElementsByTagName('a').length){
+
+links = document.documentElement.innerHTML.match(/\/groups\/\w+/g);
+
+links.sort(function(a, b){
+return a.length - b.length;
+}); console.log("[["+links.allGroups().join(",")+"],["+links.validGroups().join(",")+"]]");
+}
+else
+x.a = document.getElementsByTagName('a').length;
+}, NETWORKTIMEOUT);
+});
+x.a = 0;
